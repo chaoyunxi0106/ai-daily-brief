@@ -17,9 +17,12 @@ export async function generateDailyBrief(allData, config) {
   const { apiKey, model, baseUrl, temperature } = config;
   
   if (!apiKey || apiKey === 'YOUR_DEEPSEEK_API_KEY_HERE') {
-    throw new Error('⚠️ 请先配置 DeepSeek API Key！
-   注册: https://platform.deepseek.com/
-   然后在 config.local.js 中填入你的密钥');
+    throw new Error(
+      '⚠️ 请先配置 DeepSeek API Key！\n' +
+      '   注册: https://platform.deepseek.com/\n' +
+      '   本地运行: DEEPSEEK_API_KEY=sk-xxx node src/index.js\n' +
+      '   线上运行: 在 GitHub Secrets 中设置 DEEPSEEK_API_KEY'
+    );
   }
 
   console.log('🧠 正在调用 DeepSeek API 生成智能简报...');
