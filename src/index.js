@@ -6,7 +6,7 @@
  * ========================================
  */
 
-import { fileURLToPath } from 'url';
+
 
 import fetchGitHubTrending from './sources/github-trending.js';
 import fetchArxivPapers from './sources/arxiv.js';
@@ -17,8 +17,8 @@ import fetchRSSFeeds from './sources/rss-fetcher.js';
 import generateDailyBrief from './processors/summarizer.js';
 import pushBrief from './push/push.js';
 
-// ✅ 改为导入异步加载函数
-import { loadConfig } from '../config/config.js';
+
+import config from '../config/config.js';
 
 /**
  * 主函数 - 运行完整的每日简报流程
