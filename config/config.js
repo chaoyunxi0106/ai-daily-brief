@@ -47,11 +47,11 @@ const config = {
     arxiv: {
       enabled: true,
       categories: ['cs.AI', 'cs.CL', 'cs.LG'],
-      maxResults: 10,
+      maxResults: 5,
     },
     hackerNews: {
       enabled: true,
-      topStories: 10,
+      topStories: 3,
     },
     worldNews: {
       enabled: true,
