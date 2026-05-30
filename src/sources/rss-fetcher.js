@@ -44,7 +44,7 @@ function parseRSS(xml) {
   for (const item of matches) {
     try {
       const getTag = (tag) => {
-        const m = item.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`));
+        const m = item.match(new RegExp('<' + tag + '[^>]*>([\\s\\S]*?)<\\/' + tag + '>'));
         return m ? m[1].replace(/<!\[CDATA\[|\]\]>/g, '').trim() : '';
       };
       items.push({
