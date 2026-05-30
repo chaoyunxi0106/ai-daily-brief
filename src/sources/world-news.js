@@ -65,7 +65,7 @@ function parseRSS(xml, source) {
   const items = [];
   
   // 提取 <item> 标签
-  const itemRegex = /<item>[\\s\\S]*?<\\/item>/g;
+  const itemRegex = /<item>[\s\S]*?<\/item>/g;
   const matches = xml.match(itemRegex) || [];
   
   for (const item of matches) {
