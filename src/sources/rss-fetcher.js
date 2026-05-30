@@ -38,14 +38,14 @@ export async function fetchRSSFeeds(feeds = []) {
 
 function parseRSS(xml) {
   const items = [];
-  const itemRegex = /<item>[\\s\\S]*?<\\/item>/g;
+  const itemRegex = /<item>[\s\\S]*?<\/item>/g;
   const matches = xml.match(itemRegex) || [];
   
   for (const item of matches) {
     try {
       const getTag = (tag) => {
         const m = item.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`));
-        return m ? m[1].replace(/<!\\[CDATA\\[|\\]\\]>/g, '').trim() : '';
+        return m ? m[1].replace(/<!\[CDATA\[|\]\]>/g, '').trim() : '';
       };
       items.push({
         title: getTag('title') || '(无标题)',
