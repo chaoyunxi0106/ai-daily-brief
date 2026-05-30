@@ -25,7 +25,7 @@ import config from '../config/config.js';
  */
 async function main() {
   // ✅ 第一步：异步加载配置
-  const config = await loadConfig();
+
 
   console.log('\n');
   console.log('╔══════════════════════════════════════╗');
