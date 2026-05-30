@@ -1,0 +1,23 @@
+{
+  "name": "ai-daily-brief",
+  "version": "1.0.0",
+  "description": "AI每日简报 - 自动聚合GitHub趋势、学术论文、世界新闻，由DeepSeek总结推送到手机",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node src/index.js --test"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "ai",
+    "daily",
+    "brief",
+    "news",
+    "github",
+    "arxiv",
+    "deepseek"
+  ]
+}
