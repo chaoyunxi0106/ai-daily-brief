@@ -5,28 +5,28 @@
  *   运行方式: node src/index.js
  * ========================================
  */
-import fs from 'fs';
-import path from 'path';
+
 import { fileURLToPath } from 'url';
 
-// 导入各数据源
 import fetchGitHubTrending from './sources/github-trending.js';
 import fetchArxivPapers from './sources/arxiv.js';
 import fetchHackerNews from './sources/hackernews.js';
 import fetchWorldNews from './sources/world-news.js';
 import fetchRSSFeeds from './sources/rss-fetcher.js';
 
-// 导入AI处理器和推送器
 import generateDailyBrief from './processors/summarizer.js';
 import pushBrief from './push/push.js';
 
-// 导入配置
-import config from '../config/config.js';
+// ✅ 改为导入异步加载函数
+import { loadConfig } from '../config/config.js';
 
 /**
  * 主函数 - 运行完整的每日简报流程
  */
 async function main() {
+  // ✅ 第一步：异步加载配置
+  const config = await loadConfig();
+
   console.log('\n');
   console.log('╔══════════════════════════════════════╗');
   console.log('║     📰 AI 每日简报 · 启动           ║');
@@ -42,12 +42,11 @@ async function main() {
     rss: [],
   };
 
-  // ====== 第一步：并行抓取所有数据源 ======
+  // ====== 数据采集（后续代码不变）======
   console.log('┌─────────── 第一阶段：数据采集 ───────────┐');
   
   const fetchTasks = [];
 
-  // GitHub 趋势
   if (config.sources.githubTrending.enabled) {
     fetchTasks.push(
       fetchGitHubTrending(config.sources.githubTrending)
@@ -56,7 +55,6 @@ async function main() {
     );
   }
 
-  // ArXiv 论文
   if (config.sources.arxiv.enabled) {
     fetchTasks.push(
       fetchArxivPapers(config.sources.arxiv)
@@ -65,7 +63,6 @@ async function main() {
     );
   }
 
-  // Hacker News
   if (config.sources.hackerNews.enabled) {
     fetchTasks.push(
       fetchHackerNews(config.sources.hackerNews)
@@ -74,7 +71,6 @@ async function main() {
     );
   }
 
-  // 世界新闻
   if (config.sources.worldNews.enabled) {
     fetchTasks.push(
       fetchWorldNews(config.sources.worldNews)
@@ -83,7 +79,6 @@ async function main() {
     );
   }
 
-  // RSS 订阅
   if (config.sources.rss.enabled && config.sources.rss.feeds?.length > 0) {
     fetchTasks.push(
       fetchRSSFeeds(config.sources.rss.feeds)
@@ -92,12 +87,10 @@ async function main() {
     );
   }
 
-  // 等待所有数据源完成
   await Promise.all(fetchTasks);
-
   console.log('└──────────────────────────────────────────┘\n');
 
-  // ====== 统计抓取结果 ======
+  // ====== 统计 ======
   const totalItems = results.github.length + results.arxiv.length + 
                      results.hackernews.length + results.worldNews.length + 
                      results.rss.length;
@@ -114,7 +107,7 @@ async function main() {
     return;
   }
 
-  // ====== 第二步：AI 智能总结 ======
+  // ====== AI 总结 ======
   console.log('\n┌─────────── 第二阶段：AI 智能总结 ─────────┐');
   
   let brief;
@@ -128,12 +121,12 @@ async function main() {
     return;
   }
 
-  // ====== 显示简报复审 ======
+  // ====== 简报预览 ======
   console.log('┌─────────── 生成的简报预览 ─────────┐');
   console.log(brief.substring(0, 800) + '...');
   console.log('└────────────────────────────────────┘\n');
 
-  // ====== 第三步：推送 ======
+  // ====== 推送 ======
   console.log('┌─────────── 第三阶段：消息推送 ───────────┐');
   
   const pushResults = await pushBrief(brief, config.push);
@@ -151,7 +144,6 @@ async function main() {
   console.log('');
 }
 
-// 运行主程序
 main().catch(e => {
   console.error('\n❌ 程序异常:', e.message);
   process.exit(1);
