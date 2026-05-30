@@ -39,16 +39,18 @@ function parseArxivXml(xml) {
   
   for (const entry of entries) {
     try {
-      const getId = (tag) => {
-        const match = entry.match(new RegExp(`<${tag}>([\s\S]*?)<\/${tag}>`));
-        return match ? match[1].trim() : '';
+      const titleMatch = entry.match(/<title>([\s\S]*?)<\/title>/);
+      const title = titleMatch ? titleMatch[1].trim().replace(/\s+/g, ' ') : '';
       };
       
-      const title = getId('title').replace(/\s+/g, ' ');
-      const summary = getId('summary').replace(/\s+/g, ' ').substring(0, 300);
-      const published = getId('published');
-      const linkMatch = entry.match(/<id>[^<]*<\/id>/);
-      const link = linkMatch ? linkMatch[0].replace(/<\/?id>/g, '').trim() : '';
+      const summaryMatch = entry.match(/<summary>([\s\S]*?)<\/summary>/);
+      const summary = summaryMatch ? summaryMatch[1].trim().replace(/\s+/g, ' ').substring(0, 300) : '';
+      
+      const publishedMatch = entry.match(/<published>([\s\S]*?)<\/published>/);
+      const published = publishedMatch ? publishedMatch[1].trim() : '';
+      
+      const idMatch = entry.match(/<id>([\s\S]*?)<\/id>/);
+      const entryId = idMatch ? idMatch[1].trim() : '';
       
       // 提取作者
       const authorRegex = /<author>[\s\S]*?<name>([\s\S]*?)<\/name>[\s\S]*?<\/author>/g;
@@ -70,7 +72,7 @@ function parseArxivXml(xml) {
         title: title || '(无标题)',
         authors: authors.slice(0, 5),
         summary: summary || '(无摘要)',
-        url: link || `https://arxiv.org/abs/${getId('id').split('/').pop()}`,
+        url: entryId,
         published: published,
         categories: categories,
         source: 'ArXiv',
