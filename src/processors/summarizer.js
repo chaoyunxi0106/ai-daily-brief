@@ -110,7 +110,7 @@ function buildUserMessage(data) {
   // 世界新闻
   if (data.worldNews && data.worldNews.length > 0) {
     msg += '=== 世界新闻 ===\n';
-    data.worldNews.slice(0, 5).forEach((n, i) => {
+    data.worldNews.slice(0, 3).forEach((n, i) => {
       msg += `${i+1}. [${n.source}] ${n.title}\n   ${n.description}\n   链接: ${n.url}\n\n`;
     });
   }
@@ -118,7 +118,7 @@ function buildUserMessage(data) {
   // RSS 订阅
   if (data.rss && data.rss.length > 0) {
     msg += '=== 订阅RSS ===\n';
-    data.rss.slice(0, 5).forEach((r, i) => {
+    data.rss.slice(0, 3).forEach((r, i) => {
       msg += `${i+1}. [${r.feedName}] ${r.title}\n   链接: ${r.url}\n\n`;
     });
   }
