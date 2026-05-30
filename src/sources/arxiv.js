@@ -41,7 +41,6 @@ function parseArxivXml(xml) {
     try {
       const titleMatch = entry.match(/<title>([\s\S]*?)<\/title>/);
       const title = titleMatch ? titleMatch[1].trim().replace(/\s+/g, ' ') : '';
-      };
       
       const summaryMatch = entry.match(/<summary>([\s\S]*?)<\/summary>/);
       const summary = summaryMatch ? summaryMatch[1].trim().replace(/\s+/g, ' ').substring(0, 300) : '';
